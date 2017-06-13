@@ -48,6 +48,7 @@ install_linux: &install_linux
   # Setup JDK
   - jdk_switcher use oraclejdk7
   - java -version
+  - sudo rm $APT_CACHE_DIR/lock
 
 
 install_osx: &install_osx
