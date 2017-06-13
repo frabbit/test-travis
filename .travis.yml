@@ -8,17 +8,6 @@ addons: &addons
 
 install_linux: &install_linux
   # Install dependencies
-  - sudo add-apt-repository ppa:haxe/ocaml -y
-  - sudo apt-get update
-  - sudo apt-get install -y
-      ocaml
-      ocaml-native-compilers
-      ocaml-findlib
-      camlp4
-      libpcre3-dev
-      zlib1g-dev
-      libgtk2.0-dev
-      awscli
   - wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin system
   - export OPAMYES=1
   - opam install sedlex xml-light extlib rope ptmap
@@ -86,6 +75,17 @@ matrix:
         - "export DISPLAY=:99.0"
         - "sh -e /etc/init.d/xvfb start"
         - "export AUDIODEV=null"
+        - sudo add-apt-repository ppa:haxe/ocaml -y
+        - sudo apt-get update
+        - sudo apt-get install -y
+            ocaml
+            ocaml-native-compilers
+            ocaml-findlib
+            camlp4
+            libpcre3-dev
+            zlib1g-dev
+            libgtk2.0-dev
+            awscli
       install: *install_linux
 
     - os: linux
@@ -97,6 +97,17 @@ matrix:
         - travis_retry sudo apt-get install -y
             gcc-multilib
             g++-multilib
+        - sudo add-apt-repository ppa:haxe/ocaml -y
+        - sudo apt-get update
+        - sudo apt-get install -y
+            ocaml
+            ocaml-native-compilers
+            ocaml-findlib
+            camlp4
+            libpcre3-dev
+            zlib1g-dev
+            libgtk2.0-dev
+            awscli
       install: *install_linux
 
     #######
