@@ -6,9 +6,9 @@ cache:
       - $HOME/.opam
       - $HOME/Library/Caches/Homebrew
       - $HOME/neko
-      - $Home/build/frabbit/.opam
-      - $Home/build/frabbit/Library/Caches/Homebrew
-      - $Home/build/frabbit/neko
+      - $HOME/build/frabbit/.opam
+      - $HOME/build/frabbit/Library/Caches/Homebrew
+      - $HOME/build/frabbit/neko
 
 sudo: required
 dist: trusty
