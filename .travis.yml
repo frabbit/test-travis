@@ -8,6 +8,7 @@ cache:
       - $HOME/neko
       - $HOME/build/frabbit/neko
       - $HOME/apt-cache
+      - /usr/local/Cellar
 
 sudo: required
 dist: trusty
