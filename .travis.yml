@@ -1,5 +1,7 @@
 env:
   global:
+cache:
+    apt: true
 
 sudo: required
 dist: trusty
