@@ -2,7 +2,9 @@ env:
   global:
 cache:
     apt: true
-    directories: $HOME/.opam
+    directories:
+      - $HOME/.opam
+      - $HOME/Library/Caches/Homebrew
 
 sudo: required
 dist: trusty
