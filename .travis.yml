@@ -15,7 +15,7 @@ osx_image: xcode6.4
 addons: &addons
 
 install_linux: &install_linux
-  - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
+  - export APT_CACHE_DIR=~/apt-cache && mkdir -pv $APT_CACHE_DIR
   - sudo add-apt-repository ppa:haxe/ocaml -y
   - sudo apt-get update
   - sudo apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -y
