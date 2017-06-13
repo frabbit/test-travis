@@ -21,7 +21,7 @@ install_linux: &install_linux
   - export OPAMYES=1
   - opam install sedlex xml-light extlib rope ptmap
   # Install neko
-  - git clone https://github.com/HaxeFoundation/neko.git ../neko
+  - git clone https://github.com/HaxeFoundation/neko.git ../neko || true
   - pushd ../neko
   - cmake . -DSTATIC_DEPS=all
   # download static dependencies before actual build, with 3 chances to deal with network issues
