@@ -18,8 +18,13 @@ install_osx: &install_osx
 
 
 do_cache: &do_cache
-  if [ -d "$HOME/build_cache" ]; then
+  if [ -d "$HOME/build_cache/foo" ]; then
     echo "build cache available";
+  fi
+
+do_create: &do_create
+  if [ ! -d "$HOME/build_cache/foo" ]; then
+    mkdir $HOME/build_cache/foo;
   fi
 
 matrix:
@@ -35,6 +40,7 @@ matrix:
       script:
         - echo "script linux 1"
         - *do_cache
+        - *do_create
 
     - stage: test
       os: linux
@@ -56,6 +62,7 @@ matrix:
       script:
         - echo "script osx 1"
         - *do_cache
+        - *do_create
 
     - stage: test
       os: osx
@@ -65,6 +72,7 @@ matrix:
       script:
         - echo "script osx 2"
         - *do_cache
+
 
     # deploy linux
     - stage: deploy
