@@ -30,7 +30,7 @@ do_create: &do_create
 matrix:
   include:
     # test linux
-    - stage: test
+    - stage: cache
       os: linux
       env:
         - IS_LINUX=1
@@ -38,39 +38,39 @@ matrix:
         - echo "before"
       install: *install_linux
       script:
-        - echo "script linux 1"
+        - echo "cache linux"
         - *do_cache
         - *do_create
 
     - stage: test
       os: linux
       env:
-        - IS_LINUX=1
+        - IS_LINUX=2
       before_install:
         - echo "before"
       install: *install_linux
       script:
-        - echo "script linux 2"
+        - echo "script linux"
         - *do_cache
 
     # test osx
-    - stage: test
+    - stage: cache
       os: osx
       env:
         - IS_OSX=1
       install: *install_osx
       script:
-        - echo "script osx 1"
+        - echo "cache osx"
         - *do_cache
         - *do_create
 
     - stage: test
       os: osx
       env:
-        - IS_OSX=1
+        - IS_OSX=2
       install: *install_osx
       script:
-        - echo "script osx 2"
+        - echo "script osx"
         - *do_cache
 
 
@@ -79,10 +79,12 @@ matrix:
       os: linux
       script:
         - echo "deploy linux"
+        - *do_cache
 
     # deploy osx
     - stage: deploy
       os: osx
       script:
         - echo "deploy osx"
+        - *do_cache
 
