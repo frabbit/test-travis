@@ -1,144 +1,71 @@
 env:
   global:
 cache:
-    apt: true
     directories:
-      - $HOME/.opam
-      - $HOME/Library/Caches/Homebrew
-      - $HOME/neko
-      - $HOME/build/frabbit/neko
-      - $HOME/apt-cache
-      - /usr/local/Cellar
+      - $HOME/build_cache
+
 
 sudo: required
 dist: trusty
 osx_image: xcode6.4
-addons: &addons
 
 install_linux: &install_linux
-  - export APT_CACHE_DIR=~/apt-cache && mkdir -pv $APT_CACHE_DIR
-  - sudo add-apt-repository ppa:haxe/ocaml -y
-  - sudo apt-get update
-  - sudo apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -y
-      ocaml
-      ocaml-native-compilers
-      ocaml-findlib
-      camlp4
-      libpcre3-dev
-      zlib1g-dev
-      libgtk2.0-dev
-      awscli
-  # Install dependencies
-  - wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin system
-  - export OPAMYES=1
-  - opam install sedlex xml-light extlib rope ptmap
-  # Install neko
-  - git clone https://github.com/HaxeFoundation/neko.git ../neko || true
-  - pushd ../neko
-  - cmake . -DSTATIC_DEPS=all
-  # download static dependencies before actual build, with 3 chances to deal with network issues
-  - make download_static_deps || make download_static_deps || make download_static_deps
-  - make
-  - sudo make install
-  - popd
-  # Setup database
-  - travis_retry sudo apt-get install mysql-server-5.6 -y
-  - mysql -u root -e "create user travis@localhost identified by '';"
-  - mysql -u root -e "create database haxe_test;"
-  - mysql -u root -e "grant all on haxe_test.* to travis@localhost;"
-  # Setup JDK
-  - jdk_switcher use oraclejdk7
-  - java -version
-  - sudo rm $APT_CACHE_DIR/lock
+  - test 1 = 1
 
 
 install_osx: &install_osx
-  # Install dependencies
-  - brew uninstall --force brew-cask # https://github.com/caskroom/homebrew-cask/pull/15381
-  - travis_retry brew update
-  - travis_retry brew install opam;
-  - export OPAMYES=1
-  - opam init
-  - opam install camlp4 sedlex ocamlfind xml-light extlib rope ptmap
-  - eval `opam config env`
-  # Install neko
-  - brew upgrade cmake # we need a recent cmake to use CMAKE_OSX_DEPLOYMENT_TARGET
-  - git clone https://github.com/HaxeFoundation/neko.git ../neko || true
-  - pushd ../neko
-  - cmake . -DSTATIC_DEPS=all
-  # download static dependencies before actual build, with 3 chances to deal with network issues
-  - make download_static_deps || make download_static_deps || make download_static_deps
-  - make
-  - sudo make install
-  - popd
-  # Setup database
-  - travis_retry brew install mysql
-  - mysql.server start
-  - mysql -u root -e "create user if not exists travis@localhost identified by '';"
-  - mysql -u root -e "create database haxe_test;"
-  - mysql -u root -e "grant all on haxe_test.* to travis@localhost;"
+  - test 1 = 1
 
 
 matrix:
   include:
-    #########
-    # linux #
-    #########
-    #- os: linux
-    #  env:
-    #    - TEST=macro,neko,js,php,php7,flash9,as3,java,cs,python,hl,lua
-    #    - DEPLOY=1
-    #    # - SAUCE=1
-    #  # addons:
-    #  #   <<: *addons
-    #  #  sauce_connect: true
-    #  before_install:
-    #    - sudo apt-get update -y || true
-    #    - "export DISPLAY=:99.0"
-    #    - "sh -e /etc/init.d/xvfb start"
-    #    - "export AUDIODEV=null"
-#
-    #  install: *install_linux
-
-    #- os: linux
-    #  env:
-    #    - TEST=cpp
-    #    - HXCPP_COMPILE_CACHE=~/hxcache
-    #  before_install:
-    #    - sudo apt-get update -y || true
-    #    - travis_retry sudo apt-get install -y
-    #        gcc-multilib
-    #        g++-multilib
-    #    - sudo add-apt-repository ppa:haxe/ocaml -y
-    #    - sudo apt-get update
-    #    - sudo apt-get install -y
-    #        ocaml
-    #        ocaml-native-compilers
-    #        ocaml-findlib
-    #        camlp4
-    #        libpcre3-dev
-    #        zlib1g-dev
-    #        libgtk2.0-dev
-    #        awscli
-    #  install: *install_linux
-
-    #######
-    # osx #
-    #######
-    - os: osx
+    # test linux
+    - stage: test
+      os: linux
       env:
-        - TEST=macro,neko,js,php,flash9,as3,java,cs,python,hl,lua
-        - DEPLOY=1
-      install: *install_osx
-#
-    #- os: osx
-    #  env:
-    #    - TEST=cpp
-    #    - HXCPP_COMPILE_CACHE=~/hxcache
-    #  install: *install_osx
+        - IS_LINUX=1
+      before_install:
+        - echo "before"
+      install: *install_linux
+      script:
+        - echo "script linux 2"
 
-branches:
-  except:
-    # A hack to prevent building for tags, assuming they all start with a number.
-    # https://github.com/travis-ci/travis-ci/issues/1532
-    - /^[0-9]/
+    - stage: test
+      os: linux
+      env:
+        - IS_LINUX=1
+      before_install:
+        - echo "before"
+      install: *install_linux
+      script:
+        - echo "script linux 2"
+
+    # test osx
+    - stage: test
+      os: osx
+      env:
+        - IS_OSX=1
+      install: *install_osx
+      script:
+        - echo "script osx 1"
+
+    - stage: test
+      os: osx
+      env:
+        - IS_OSX=1
+      install: *install_osx
+      script:
+        - echo "script osc 2"
+
+    # deploy linux
+    - stage: deploy
+      os: linux
+      script:
+        - echo "deploy linux"
+
+    # deploy osx
+    - stage: deploy
+      os: osx
+      script:
+        - echo "deploy osx"
+
