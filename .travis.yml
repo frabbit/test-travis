@@ -22,7 +22,7 @@ do_cache: &do_cache
     echo "build cache available";
   fi && if [ -d "./whatever" ]; then
     echo "whatever available";
-  fi && test -d "$HOME/build_cache/foo"
+  fi
 
 do_create: &do_create
   if [ ! -d "$HOME/build_cache/foo" ]; then
