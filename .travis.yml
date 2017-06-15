@@ -56,27 +56,6 @@ matrix:
         - echo "script linux"
         - *do_cache
 
-    # test osx
-    - stage: cache
-      os: osx
-      env:
-        - IS_OSX=1
-      install: *install_osx
-      script:
-        - echo "cache osx"
-        - *do_cache
-        - *do_create
-
-    - stage: test
-      os: osx
-      env:
-        - IS_OSX=1
-      install: *install_osx
-      script:
-        - echo "script osx"
-        - *do_cache
-
-
     # deploy linux
     - stage: deploy
       os: linux
@@ -86,12 +65,35 @@ matrix:
         - echo "deploy linux"
         - *do_cache
 
+    # test osx
+    #- stage: cache
+    #  os: osx
+    #  env:
+    #    - IS_OSX=1
+    #  install: *install_osx
+    #  script:
+    #    - echo "cache osx"
+    #    - *do_cache
+    #    - *do_create
+
+    #- stage: test
+    #  os: osx
+    #  env:
+    #    - IS_OSX=1
+    #  install: *install_osx
+    #  script:
+    #    - echo "script osx"
+    #    - *do_cache
+
+
+
+
     # deploy osx
-    - stage: deploy
-      os: osx
-      env:
-        - IS_OSX=1
-      script:
-        - echo "deploy osx"
-        - *do_cache
+    #- stage: deploy
+    #  os: osx
+    #  env:
+    #    - IS_OSX=1
+    #  script:
+    #    - echo "deploy osx"
+    #    - *do_cache
 
