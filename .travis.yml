@@ -17,7 +17,7 @@ install_osx: &install_osx
   - test 1 = 1
 
 
-do_cache:
+do_cache: &do_cache
   - if [ -d "$HOME/build_cache" ]; then
       echo "build cache available";
     fi
