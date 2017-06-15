@@ -17,6 +17,11 @@ install_osx: &install_osx
   - test 1 = 1
 
 
+do_cache:
+  - if [ -d "$HOME/build_cache" ]; then
+      echo "build cache available";
+    fi
+
 matrix:
   include:
     # test linux
@@ -28,7 +33,8 @@ matrix:
         - echo "before"
       install: *install_linux
       script:
-        - echo "script linux 2"
+        - echo "script linux 1"
+        - *do_cache
 
     - stage: test
       os: linux
@@ -39,6 +45,7 @@ matrix:
       install: *install_linux
       script:
         - echo "script linux 2"
+        - *do_cache
 
     # test osx
     - stage: test
@@ -48,6 +55,7 @@ matrix:
       install: *install_osx
       script:
         - echo "script osx 1"
+        - *do_cache
 
     - stage: test
       os: osx
@@ -55,7 +63,8 @@ matrix:
         - IS_OSX=1
       install: *install_osx
       script:
-        - echo "script osc 2"
+        - echo "script osx 2"
+        - *do_cache
 
     # deploy linux
     - stage: deploy
